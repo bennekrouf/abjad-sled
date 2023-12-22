@@ -1,0 +1,30 @@
+[
+    {   
+        "id":30,
+        "name": "tāʾ marbūṭah",
+        "name_arabic": "تاء مربوطة",
+        "transliteration": "",
+        "closest_english_equivalent": "",
+        "contextual_forms": {
+            "final": "ـة",
+            "isolated": "ة"
+        },
+        "audio": "ta_marbutah.mp3",
+        "level": 2
+    },
+    {
+        "id": 31,
+        "name": "ʾalif maqṣūrah",
+        "name_arabic": "الف مقصورة",
+        "transliteration": "",
+        "closest_english_equivalent": "",
+        "contextual_forms": {
+            "final": "ـى",
+            "medial": "ـىـ",
+            "initial": "ىـ",
+            "isolated": "ى"
+        },
+        "audio": "alif_maqsura.mp3",
+        "level": 2
+    }
+]
