@@ -1,24 +1,27 @@
 use std::path::PathBuf;
 
 use crate::models::Database;
-use crate::domain::words_init;
+use crate::domain::word_init;
 
 pub fn init(absolute_data_folder_path: &PathBuf) -> Database {
     // Construct the absolute paths to the database files
-    let words_db_path = absolute_data_folder_path.join("words_db");
+    let word_db_path = absolute_data_folder_path.join("word_db");
+    let verse_db_path = absolute_data_folder_path.join("verse_db");
 
     // Open the Sled databases using the adjusted file paths
-    let words_db = sled::open(words_db_path).expect("Failed to open words database");
+    let word_db = sled::open(word_db_path).expect("Failed to open words database");
+    let verse_db = sled::open(verse_db_path).expect("Failed to open verse database");
 
     let database = Database {
-        words_db,
+        word_db,
+        verse_db, // used in read-only
     };
 
-    words_init::init(&database);
+    word_init::init(&database);
 
     // Count the number of key/value pairs in each database and print
-    let words_db_size = database.words_db.iter().count();
-    println!("words_db contains {} key/value pairs", words_db_size);
+    let word_db_size = database.word_db.iter().count();
+    println!("word_db contains {} key/value pairs", word_db_size);
 
     database
 }

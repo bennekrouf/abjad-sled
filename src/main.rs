@@ -5,11 +5,13 @@ mod xhr_guard;
 
 pub mod domain {
     pub mod all_db;
-    pub mod words_init;
+    pub mod word_init;
 }
 pub mod utils {
     pub mod yml_path;
     pub mod data_folder_path;
+    pub mod letters_from_yaml;
+    pub mod insert_in_sled;
 }
 
 #[tokio::main]
@@ -17,9 +19,7 @@ async fn main() {
     // Check deserialization of all files before starting the server
     if let Err(e) = validator::validate() {
         eprintln!("Similar error loading validator files: {}", e);
-        std::process::exit(1);  // Exit the program with a non-zero status code
+        std::process::exit(1);
     }
-    
-
     server::start_server().await;
 }

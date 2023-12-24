@@ -1,53 +1,43 @@
-use rocket::{routes, get, serde::{json::Json}};
-use rocket::config::Config;
-use rocket::fairing::{Fairing, Info, Kind};
-use rocket::http::Header;
-use rocket::{Rocket, Build, Request, Response};
-use std::{fs, env};
-use serde::Serialize;
+use rocket::{http::Header, fairing::{Fairing, Info, Kind}, config::Config, routes, get, State, serde::json::Json};
+use rocket::{Rocket, Build, Request, Response, fs::NamedFile};
 use log::LevelFilter;
+use log::{info, error};
 
+use crate::models::{Database, Letter};
 use crate::domain::all_db;
-use crate::utils::data_folder_path;
-use crate::utils::yml_path::load_config;
-// use path::Path;
-// use time::now;
-use std::path::PathBuf;
-// use rocket::http::uri::Path;
-use rocket::fs::NamedFile;
-// use rocket::yansi::Paint;
+use crate::utils::{data_folder_path, yml_path::load_config};
+use std::{path::PathBuf, env};
 pub struct CORS;
 
-#[derive(Serialize)]
-struct Mp3File {
-    name: String,
-    url: String,
-}
-
 #[get("/content")]
-fn content() -> Json<Vec<Mp3File>> {
-    let mp3_files = fs::read_dir("data")
-        .expect("Failed to read data directory")
-        .filter_map(|entry| entry.ok())
-        .filter(|entry| entry.path().extension().map_or(false, |ext| ext == "mp3"))
-        .map(|entry| {
-            let file_name = entry.file_name().into_string().unwrap_or_default();
-            Mp3File {
-                name: file_name.clone(),
-                url: format!("http://localhost:7000/files/{}", file_name),
+fn content(dbs: &State<Database>) -> Json<Vec<Letter>> {
+    info!("Accessing /content endpoint");
+
+    let db = &dbs.word_db;
+    let letters = db.iter()
+        .filter_map(|item| item.ok())
+        .filter_map(|(key, value)| {
+            match bincode::deserialize::<Letter>(&value) {
+                Ok(letter) => {
+                    let key_str = String::from_utf8_lossy(&key);
+                    info!("Loaded letter with key: {}", key_str);
+                    Some(letter)
+                },
+                Err(e) => {
+                    error!("Failed to deserialize letter: {}", e);
+                    None
+                }
             }
         })
-        .collect::<Vec<Mp3File>>();
+        .collect::<Vec<Letter>>();
 
-    Json(mp3_files)
+    Json(letters)
 }
 
 #[get("/files/<file..>")]
 async fn files(file: PathBuf) -> Option<NamedFile> {
     let full_path = PathBuf::from("data").join(file);
     NamedFile::open(full_path).await.ok()
-
-    // NamedFile::open(Path::new("data/").join(file)).await.ok()
 }
 
 #[rocket::async_trait]
