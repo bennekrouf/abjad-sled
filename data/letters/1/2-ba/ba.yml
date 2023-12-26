@@ -1,0 +1,24 @@
+- name: bāʾ
+  id: ـب
+  audio: 2-ba.mp3
+  level: 2
+
+- name: bāʾ
+  id: ـبـ
+  audio: 2-ba.mp3
+  level: 2
+
+- name: bāʾ
+  id: بـ
+  audio: 2-ba.mp3
+  level: 2
+
+- name: bāʾ
+  id: ب
+  audio: 2-ba.mp3
+  level: 1
+
+- name: bāʾ
+  id: بَاء
+  audio: 2-ba.mp3
+  level: 3

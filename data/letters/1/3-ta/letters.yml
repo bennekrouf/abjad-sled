@@ -1,0 +1,24 @@
+- name: tāʾ
+  id: تَاء
+  audio: null
+  level: 3
+
+- name: tāʾ
+  id: ت
+  audio: null
+  level: 1
+
+- name: tāʾ
+  id: ـت
+  audio: null
+  level: 2
+
+- name: tāʾ
+  id: ـتـ
+  audio: null
+  level: 2
+
+- name: tāʾ
+  id: تـ
+  audio: null
+  level: 2

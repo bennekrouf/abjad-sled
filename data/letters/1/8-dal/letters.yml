@@ -1,0 +1,14 @@
+- name: dāl
+  id: دَال
+  audio: 8-dāl.mp3
+  level: 3
+
+- name: dāl
+  id: ـد
+  audio: 8-dāl.mp3
+  level: 2
+
+- name: dāl
+  id: د
+  audio: 8-dāl.mp3
+  level: 1

@@ -1,0 +1,24 @@
+- name: khāʾ
+  id: خَاء
+  audio: 7-kha.mp3
+  level: 3
+
+- name: khāʾ
+  id: ـخ
+  audio: 7-kha.mp3
+  level: 2
+
+- name: khāʾ
+  id: ـخـ
+  audio: 7-kha.mp3
+  level: 2
+
+- name: khāʾ
+  id: خـ
+  audio: 7-kha.mp3
+  level: 2
+
+- name: khāʾ
+  id: خ
+  audio: 7-kha.mp3
+  level: 1

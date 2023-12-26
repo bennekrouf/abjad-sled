@@ -1,0 +1,25 @@
+- name: ghayn
+  id: غَيْن
+  audio: null
+  level: 3
+
+- name: ghayn
+  id: ـغ
+  audio: null
+  level: 2
+
+- name: ghayn
+  id: ـغـ
+  audio: null
+  level: 2
+
+- name: ghayn
+  id: غـ
+  audio: null
+  level: 2
+
+- name: ghayn
+  id: غ
+  audio: null
+  level: 1
+

@@ -1,0 +1,25 @@
+- name: nūn
+  id: نُون
+  audio: null
+  level: 3
+
+- name: nūn
+  id: ـن
+  audio: null
+  level: 2
+
+- name: nūn
+  id: ـنـ
+  audio: null
+  level: 2
+
+- name: nūn
+  id: نـ
+  audio: null
+  level: 2
+
+- name: nūn
+  id: ن
+  audio: null
+  level: 2
+

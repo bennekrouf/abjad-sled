@@ -1,0 +1,24 @@
+- name: lām
+  id: لاَم
+  audio: null
+  level: 3
+
+- name: lām
+  id: ـل
+  audio: null
+  level: 2
+
+- name: lām
+  id: ـلـ
+  audio: null
+  level: 2
+
+- name: lām
+  id: لـ
+  audio: null
+  level: 2
+
+- name: lām
+  id: ل
+  audio: null
+  level: 1

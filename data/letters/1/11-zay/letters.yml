@@ -1,0 +1,14 @@
+- name: zāy
+  id: زَاي
+  audio: 11-zāy.mp3
+  level: 3
+
+- name: zāy
+  id: ـز
+  audio: 11-zāy.mp3
+  level: 2
+
+- name: zāy
+  id: ز
+  audio: 11-zāy.mp3
+  level: 1

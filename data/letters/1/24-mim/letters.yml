@@ -1,0 +1,25 @@
+- name: mīm
+  id: مِيم
+  audio: null
+  level: 3
+
+- name: mīm
+  id: ـم
+  audio: null
+  level: 2
+
+- name: mīm
+  id: ـمـ
+  audio: null
+  level: 2
+
+- name: mīm
+  id: مـ
+  audio: null
+  level: 2
+
+- name: mīm
+  id: م
+  audio: null
+  level: 1
+

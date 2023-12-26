@@ -30,17 +30,8 @@ pub enum ExerciseType {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Letter {
+    pub id: String,
     pub name: Option<String>,
-    pub name_arabic: String,
-    pub contextual_forms: Option<ContextualForms>,
     pub audio: Option<String>,
     pub level: i32,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct ContextualForms {
-    pub finalp: Option<String>,
-    pub isolated: Option<String>,
-    pub medial: Option<String>,
-    pub initial: Option<String>,
 }

@@ -7,21 +7,55 @@ use crate::models::{Database, Letter};
 use crate::domain::all_db;
 use crate::utils::{data_folder_path, yml_path::load_config};
 use std::{path::PathBuf, env};
+use crate::utils::yml_path;
+
 pub struct CORS;
 
 #[get("/content")]
 fn content(dbs: &State<Database>) -> Json<Vec<Letter>> {
     info!("Accessing /content endpoint");
 
+    let data_folder_path = yml_path::get_data_folder_path();
+    info!("Data folder path: {:?}", data_folder_path);
+
+    let server_host = "http://127.0.0.1:7000"; // Your server's host
+    let static_url_path = "/files"; // The URL path that maps to your static files
+
+    let letters_yaml_path = data_folder_path.join("letters");
+    info!("Letters YAML path: {:?}", letters_yaml_path);
+
+    let relative_path = match letters_yaml_path.strip_prefix(&data_folder_path) {
+        Ok(path) => path.to_string_lossy(),
+        Err(e) => {
+            error!("Failed to compute relative path: {}", e);
+            return Json(vec![]);  // Return an empty vector if the relative path can't be computed
+        }
+    };
+
+    let base_url = format!("{}{}/{}", server_host, static_url_path, relative_path);
+    info!("Base URL for audio files: {}", base_url);
+
     let db = &dbs.word_db;
     let letters = db.iter()
         .filter_map(|item| item.ok())
         .filter_map(|(key, value)| {
             match bincode::deserialize::<Letter>(&value) {
-                Ok(letter) => {
+                Ok(mut letter) => {
                     let key_str = String::from_utf8_lossy(&key);
                     info!("Loaded letter with key: {}", key_str);
-                    Some(letter)
+
+                    if let Some(audio_file) = &letter.audio {
+                        // Construct the audio URL only if audio is not None
+                        let relative_audio_path = audio_file.strip_prefix("/Users/mb/code/abjad-sled/data/letters/").unwrap_or(audio_file);
+                        let audio_url = format!("{}/{}", base_url, relative_audio_path);
+                        info!("Audio URL for letter {}: {}", key_str, audio_url);
+                        letter.audio = Some(audio_url);
+
+                        Some(letter) // Include this letter in the final vector
+                    } else {
+                        // Exclude this letter as its audio is None
+                        None
+                    }
                 },
                 Err(e) => {
                     error!("Failed to deserialize letter: {}", e);
