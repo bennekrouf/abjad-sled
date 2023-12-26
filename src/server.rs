@@ -1,9 +1,9 @@
-use rocket::{http::Header, fairing::{Fairing, Info, Kind}, config::Config, routes, get, State, serde::json::Json};
+use rocket::{http::Header, fairing::{Fairing, Info, Kind}, config::Config, routes, get, post, State, serde::json::Json};
 use rocket::{Rocket, Build, Request, Response, fs::NamedFile};
 use log::LevelFilter;
 use log::{info, error};
 
-use crate::models::{Database, Letter};
+use crate::models::{Database, Letter, AnswerStat};
 use crate::domain::all_db;
 use crate::utils::{data_folder_path, yml_path::load_config};
 use std::{path::PathBuf, env};
@@ -11,8 +11,8 @@ use crate::utils::yml_path;
 
 pub struct CORS;
 
-#[get("/content")]
-fn content(dbs: &State<Database>) -> Json<Vec<Letter>> {
+#[post("/content", format = "json", data = "<answer_stats>")]
+fn content(dbs: &State<Database>, answer_stats: Json<Vec<AnswerStat>>) -> Json<Vec<Letter>> {
     info!("Accessing /content endpoint");
 
     let data_folder_path = yml_path::get_data_folder_path();

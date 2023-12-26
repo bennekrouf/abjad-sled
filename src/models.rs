@@ -35,3 +35,12 @@ pub struct Letter {
     pub audio: Option<String>,
     pub level: i32,
 }
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct AnswerStat {
+    pub id: String,
+    pub g: i32,
+    pub w: i32,
+    #[serde(rename = "updatedAt")]
+    pub updated_at: i64,
+}
