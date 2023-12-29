@@ -11,7 +11,7 @@ ENV=$1
 APP_ENV=${ENV} cargo build --release
 
 SRC="/home/similar/abjad-sled/target/release/abjad"
-DEST="/home/similar/${ENV}/abjad-${ENV}"
+DEST="/home/similar/${ENV}/abjad"
 
 if [ "$SRC" != "$DEST" ]; then
     rm -Rf "$DEST"
