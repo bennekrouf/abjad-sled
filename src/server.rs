@@ -2,23 +2,23 @@ use rocket::{http::Header, fairing::{Fairing, Info, Kind}, config::Config, route
 use rocket::{Rocket, Build, Request, Response, fs::NamedFile};
 use log::LevelFilter;
 use log::{info, error};
-
-use crate::models::{Database, Letter, AnswerStat};
-use crate::domain::all_db;
-use crate::utils::{data_folder_path, yml_path::load_config};
 use std::{path::PathBuf, env};
-use crate::utils::yml_path;
+
+use crate::models::{Database, Letter, AnswerStat, AppConfig};
+use crate::domain::all_db;
+use crate::utils::data_folder_path;
+use crate::utils::yml_path::{load_config, get_data_folder_path};
 
 pub struct CORS;
 
 #[post("/content", format = "json", data = "<answer_stats>")]
-fn content(dbs: &State<Database>, answer_stats: Json<Vec<AnswerStat>>) -> Json<Vec<Letter>> {
+fn content(dbs: &State<Database>, config: &State<AppConfig>, answer_stats: Json<Vec<AnswerStat>>) -> Json<Vec<Letter>> {
     info!("Accessing /content endpoint");
 
-    let data_folder_path = yml_path::get_data_folder_path();
+    let data_folder_path = get_data_folder_path();
     info!("Data folder path: {:?}", data_folder_path);
 
-    let server_host = "http://127.0.0.1:7000"; // Your server's host
+    let server_host = format!("http://{}:{}", config.domain, config.port);
     let static_url_path = "/files"; // The URL path that maps to your static files
 
     let letters_yaml_path = data_folder_path.join("letters");
@@ -125,6 +125,7 @@ fn rocket() -> Rocket<Build> {
     rocket::build()
         .configure(figment)
         .attach(CORS)
+        .manage(config_data)
         .manage(all_db.clone())
         .mount("/", routes![
             content,
