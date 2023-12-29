@@ -103,6 +103,11 @@ pub async fn start_server() {
     rocket().launch().await.expect("server failed to launch");
 }
 
+#[get("/ping")]
+fn ping() -> &'static str {
+    "Simple content route reached"
+}
+
 fn rocket() -> Rocket<Build> {
     let data_folder_path = data_folder_path::get();
     println!("Path to wordsDB: {:?}", data_folder_path);
@@ -130,5 +135,6 @@ fn rocket() -> Rocket<Build> {
         .mount("/", routes![
             content,
             files,
+            ping
         ])
 }
