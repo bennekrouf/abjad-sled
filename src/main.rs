@@ -12,6 +12,8 @@ pub mod utils {
     pub mod data_folder_path;
     pub mod letters_from_yaml;
     pub mod insert_in_sled;
+    pub mod build_mp3_file_url;
+    pub mod build_mp3_file_path;
 }
 
 #[tokio::main]

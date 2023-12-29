@@ -2,3 +2,4 @@ macos_path: '/Users/mb/code/abjad-sled/data'
 debian_path: '/home/similar/abjad-sled/data'
 port: 7001
 domain: 'test.abjad.mayorana.ch'
+static_files_path: 'files' 

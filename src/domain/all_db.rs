@@ -1,9 +1,9 @@
 use std::path::PathBuf;
 
-use crate::models::Database;
+use crate::models::{Database, AppConfig};
 use crate::domain::word_init;
 
-pub fn init(absolute_data_folder_path: &PathBuf) -> Database {
+pub fn init(absolute_data_folder_path: &PathBuf, config: &AppConfig) -> Database {
     // Construct the absolute paths to the database files
     let word_db_path = absolute_data_folder_path.join("word_db");
     let verse_db_path = absolute_data_folder_path.join("verse_db");
@@ -17,7 +17,7 @@ pub fn init(absolute_data_folder_path: &PathBuf) -> Database {
         verse_db, // used in read-only
     };
 
-    word_init::init(&database);
+    word_init::init(&database, config);
 
     // Count the number of key/value pairs in each database and print
     let word_db_size = database.word_db.iter().count();

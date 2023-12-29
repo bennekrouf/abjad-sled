@@ -24,7 +24,7 @@ fn content(dbs: &State<Database>, config: &State<AppConfig>, answer_stats: Json<
     let letters_yaml_path = data_folder_path.join("letters");
     info!("Letters YAML path: {:?}", letters_yaml_path);
 
-    let relative_path = match letters_yaml_path.strip_prefix(&data_folder_path) {
+    let _relative_path_ = match letters_yaml_path.strip_prefix(&data_folder_path) {
         Ok(path) => path.to_string_lossy(),
         Err(e) => {
             error!("Failed to compute relative path: {}", e);
@@ -32,7 +32,6 @@ fn content(dbs: &State<Database>, config: &State<AppConfig>, answer_stats: Json<
         }
     };
 
-    // let base_url = format!("{}{}/{}", server_host, static_url_path, relative_path);
     let base_url = format!("{}{}", server_host, static_url_path);
 
     info!("Base URL for audio files: {}", base_url);
@@ -48,8 +47,8 @@ fn content(dbs: &State<Database>, config: &State<AppConfig>, answer_stats: Json<
 
                     if let Some(audio_file) = &letter.audio {
                         // Construct the audio URL only if audio is not None
-                        let relative_audio_path = audio_file.strip_prefix("/Users/mb/code/abjad-sled/data/letters/").unwrap_or(audio_file);
-                        let audio_url = format!("{}/{}", base_url, relative_audio_path);
+                        // let relative_audio_path = audio_file.strip_prefix("/Users/mb/code/abjad-sled/data/letters/").unwrap_or(audio_file);
+                        let audio_url = format!("{}/{}", base_url, audio_file);
                         info!("Audio URL for letter {}: {}", key_str, audio_url);
                         letter.audio = Some(audio_url);
 
@@ -113,14 +112,12 @@ fn ping() -> &'static str {
 fn rocket() -> Rocket<Build> {
     let data_folder_path = data_folder_path::get();
     println!("Path to wordsDB: {:?}", data_folder_path);
-
-    let all_db = all_db::init(&data_folder_path);
-
     // Get the APP_ENV environment variable
     let app_env = env::var("APP_ENV").unwrap_or_else(|_| "local".to_string());
 
     // Load the config based on APP_ENV
     let config_data = load_config(&app_env);
+    let all_db = all_db::init(&data_folder_path, &config_data);
 
     // let mut config = Config::figment().clone();
     // config.set_port(config_data.port);

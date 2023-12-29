@@ -22,6 +22,7 @@ pub struct AppConfig {
     pub debian_path: String,
     pub port: u16,
     pub domain: String,
+    pub static_files_path: String
 }
 
 #[derive(Serialize, Deserialize, Debug, Hash, Eq, PartialEq, Clone, Copy)]
