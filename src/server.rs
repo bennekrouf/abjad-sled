@@ -12,7 +12,7 @@ use crate::utils::yml_path;
 pub struct CORS;
 
 #[post("/content", format = "json", data = "<answer_stats>")]
-fn content(dbs: &State<Database>, _: Json<Vec<AnswerStat>>) -> Json<Vec<Letter>> {
+fn content(dbs: &State<Database>, answer_stats: Json<Vec<AnswerStat>>) -> Json<Vec<Letter>> {
     info!("Accessing /content endpoint");
 
     let data_folder_path = yml_path::get_data_folder_path();
