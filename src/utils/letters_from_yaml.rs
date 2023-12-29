@@ -4,11 +4,11 @@ use std::path::{Path, PathBuf};
 use std::error::Error;
 use serde_yaml;
 
-use crate::utils::yml_path;
+use crate::utils::yml_path::get_data_folder_path;
 use crate::models::Letter;
 
 pub fn load() -> Result<(Vec<Letter>, String), Box<dyn std::error::Error>> {
-    let data_folder_path = yml_path::get_data_folder_path();
+    let data_folder_path = get_data_folder_path();
     let letters_yaml_path = data_folder_path.join("letters");
     println!("letters_yaml_path : {:?}", letters_yaml_path);
 
