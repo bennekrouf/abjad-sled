@@ -19,4 +19,4 @@ if [ "$SRC" != "$DEST" ]; then
 else
     echo "Source and destination are the same. Skipping move operation."
 fi
-cp -r config.${ENV}.yml /home/similar/${ENV}/
+cp -r config.${ENV}.yml /home/similar/${ENV}/abjad/
