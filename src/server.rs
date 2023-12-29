@@ -32,7 +32,9 @@ fn content(dbs: &State<Database>, config: &State<AppConfig>, answer_stats: Json<
         }
     };
 
-    let base_url = format!("{}{}/{}", server_host, static_url_path, relative_path);
+    // let base_url = format!("{}{}/{}", server_host, static_url_path, relative_path);
+    let base_url = format!("{}{}", server_host, static_url_path);
+
     info!("Base URL for audio files: {}", base_url);
 
     let db = &dbs.word_db;
