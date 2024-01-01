@@ -7,34 +7,16 @@ use std::{path::PathBuf, env};
 use crate::models::{Database, Letter, AnswerStat, AppConfig};
 use crate::domain::all_db;
 use crate::utils::data_folder_path;
-use crate::utils::yml_path::{load_config, get_data_folder_path};
+use crate::utils::yml_path::load_config;
 
 pub struct CORS;
 
-#[post("/content", format = "json", data = "<answer_stats>")]
-fn content(dbs: &State<Database>, config: &State<AppConfig>, answer_stats: Json<Vec<AnswerStat>>) -> Json<Vec<Letter>> {
+#[post("/content", format = "json", data = "<_answer_stats>")]
+fn content(dbs: &State<Database>, _config: &State<AppConfig>, _answer_stats: Json<Vec<AnswerStat>>) -> Json<Vec<Letter>> {
     info!("Accessing /content endpoint");
 
-    let data_folder_path = get_data_folder_path();
-    info!("Data folder path: {:?}", data_folder_path);
-
-    let server_host = format!("http://{}:{}", config.domain, config.port);
-    let static_url_path = "/files"; // The URL path that maps to your static files
-
-    let letters_yaml_path = data_folder_path.join("letters");
-    info!("Letters YAML path: {:?}", letters_yaml_path);
-
-    let _relative_path_ = match letters_yaml_path.strip_prefix(&data_folder_path) {
-        Ok(path) => path.to_string_lossy(),
-        Err(e) => {
-            error!("Failed to compute relative path: {}", e);
-            return Json(vec![]);  // Return an empty vector if the relative path can't be computed
-        }
-    };
-
-    let base_url = format!("{}{}", server_host, static_url_path);
-
-    info!("Base URL for audio files: {}", base_url);
+    // let server_host = format!("http://{}", config.domain);
+    // let static_url_path = "/files"; // The URL path that maps to your static files
 
     let db = &dbs.word_db;
     let letters = db.iter()
@@ -43,12 +25,13 @@ fn content(dbs: &State<Database>, config: &State<AppConfig>, answer_stats: Json<
             match bincode::deserialize::<Letter>(&value) {
                 Ok(mut letter) => {
                     let key_str = String::from_utf8_lossy(&key);
-                    info!("Loaded letter with key: {}", key_str);
+                    // info!("Loaded letter with key: {:?}", letter.audio);
 
                     if let Some(audio_file) = &letter.audio {
-                        // Construct the audio URL only if audio is not None
-                        // let relative_audio_path = audio_file.strip_prefix("/Users/mb/code/abjad-sled/data/letters/").unwrap_or(audio_file);
-                        let audio_url = format!("{}/{}", base_url, audio_file);
+                        // Construct the correct audio URL
+                        // Assuming `audio_file` contains the relative path in the database
+                        // let audio_url = format!("{}{}{}", server_host, static_url_path, audio_file);
+                        let audio_url = format!("{}", audio_file);
                         info!("Audio URL for letter {}: {}", key_str, audio_url);
                         letter.audio = Some(audio_url);
 

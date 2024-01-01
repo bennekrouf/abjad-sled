@@ -3,7 +3,7 @@
 version = 3
 
 [[package]]
-name = "abjad"
+name = "abjad-sled"
 version = "0.1.0"
 dependencies = [
  "bincode",
