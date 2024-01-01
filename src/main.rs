@@ -3,9 +3,15 @@ mod validator;
 mod server;
 mod xhr_guard;
 
+
 pub mod domain {
     pub mod all_db;
     pub mod word_init;
+}
+pub mod api {
+    pub mod content;
+    pub mod audio_files;
+    pub mod ping;
 }
 pub mod utils {
     pub mod yml_path;

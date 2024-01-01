@@ -2,9 +2,8 @@ use std::fs::{self, File};
 use std::io::Read;
 use std::path::{Path, PathBuf};
 use std::error::Error;
-// use log::info;
+use log::info;
 use serde_yaml;
-// use log::info;
 
 use crate::utils::{yml_path::get_data_folder_path, build_mp3_file_url::build_mp3_file_url};
 use crate::utils::build_mp3_file_path::build_mp3_file_path;
@@ -48,7 +47,7 @@ fn traverse_directory(folder_path: &Path, config: &AppConfig) -> Result<(Vec<Let
                             if let Some(audio) = &letter.audio {
                                 // info!("letter.audio before: {:?}", &letter.audio);
                                 let audio_path = build_mp3_file_path(&path, audio);
-                                // info!("audio_path before build_mp3_file_url: {:?}", audio_path);
+                                info!("audio_path before build_mp3_file_url: {:?}", audio_path);
                                 match build_mp3_file_url(&config, &audio_path) {
                                     Ok(url) => letter.audio = Some(url),
                                     Err(e) => eprintln!("Error building mp3 file URL: {}", e),
