@@ -2,4 +2,6 @@ macos_path: '/Users/mb/code/abjad-sled/data'
 debian_path: '/home/t5h0qo/code/poc/abjad-sled/data'
 port: 7000
 domain: '127.0.0.1'
-static_files_path: 'files' 
+static_files_path: 'files'
+decay_rate_factor_correct: 0.5
+decay_rate_factor_incorrect: 2.0

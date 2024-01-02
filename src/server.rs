@@ -3,9 +3,10 @@ use rocket::{Rocket, Build, Request, Response};
 use log::LevelFilter;
 use std::env;
 
-use crate::domain::all_db;
+use crate::{domain::all_db, api::level_count::level_count};
 use crate::utils::data_folder_path;
-use crate::utils::yml_path::load_config;
+// use crate::utils::yml_path::load_config;
+use crate::utils::yml_path;
 
 use crate::api::content::content;
 use crate::api::audio_files::audio_files;
@@ -44,11 +45,17 @@ pub async fn start_server() {
 fn rocket() -> Rocket<Build> {
     let data_folder_path = data_folder_path::get();
     println!("Path to wordsDB: {:?}", data_folder_path);
-    // Get the APP_ENV environment variable
-    let app_env = env::var("APP_ENV").unwrap_or_else(|_| "local".to_string());
 
-    // Load the config based on APP_ENV
-    let config_data = load_config(&app_env);
+    let config_data = {
+        let config = yml_path::CONFIG.lock().unwrap();
+        config.clone() // Assuming AppConfig implements Clone
+    };
+
+    // // Get the APP_ENV environment variable
+    // let app_env = env::var("APP_ENV").unwrap_or_else(|_| "local".to_string());
+
+    // // Load the config based on APP_ENV
+    // let config_data = load_config(&app_env);
     let all_db = all_db::init(&data_folder_path, &config_data);
 
     // let mut config = Config::figment().clone();
@@ -67,5 +74,6 @@ fn rocket() -> Rocket<Build> {
             content,
             audio_files,
             ping,
+            level_count
         ])
 }

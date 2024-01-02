@@ -16,13 +16,15 @@ impl Clone for Database {
     }
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 pub struct AppConfig {
     pub macos_path: String,
     pub debian_path: String,
     pub port: u16,
     pub domain: String,
-    pub static_files_path: String
+    pub static_files_path: String,
+    pub decay_rate_factor_correct: f32,
+    pub decay_rate_factor_incorrect: f32,
 }
 
 #[derive(Serialize, Deserialize, Debug, Hash, Eq, PartialEq, Clone, Copy)]
@@ -45,4 +47,14 @@ pub struct AnswerStat {
     pub w: i32,
     #[serde(rename = "updatedAt")]
     pub updated_at: i64,
+}
+
+#[derive(Debug, Serialize)]
+pub struct LevelCount {
+    pub level: i32,
+    pub count: usize,
+    pub total_correct: i32,
+    pub total_incorrect: i32,
+    pub progress: f32,
+    pub total_score: f32,
 }

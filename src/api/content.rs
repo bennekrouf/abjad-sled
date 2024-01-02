@@ -1,47 +1,37 @@
+use std::collections::HashMap;
+// use log::info;
 use rocket::{post, State, serde::json::Json};
-use log::{info, error};
-
+// use log::{info, error};
 use crate::models::{Database, Letter, AnswerStat, AppConfig};
-
+use crate::api::find_lowest_unfinished_level::find_lowest_unfinished_level;
+use super::{get_current_time::get_current_time, calculate_progress::calculate_progress};
 pub struct CORS;
 
-#[post("/content", format = "json", data = "<_answer_stats>")]
-pub fn content(dbs: &State<Database>, _config: &State<AppConfig>, _answer_stats: Json<Vec<AnswerStat>>) -> Json<Vec<Letter>> {
-    info!("Accessing /content endpoint");
+const SOME_THRESHOLD:f32 = 100.0;
 
-    // let server_host = format!("http://{}", config.domain);
-    // let static_url_path = "/files"; // The URL path that maps to your static files
-
+#[post("/content", format = "json", data = "<answer_stats>")]
+pub fn content(dbs: &State<Database>, _config: &State<AppConfig>, answer_stats: Json<Vec<AnswerStat>>) -> Json<Vec<Letter>> {
     let db = &dbs.word_db;
+    let lowest_unfinished_level = find_lowest_unfinished_level(dbs, &answer_stats);
+
+    // info!("lowest_unfinished_level : {}", lowest_unfinished_level.unwrap().clone());
+    let stat_map: HashMap<String, &AnswerStat> = answer_stats.iter()
+        .map(|stat| (stat.id.clone(), stat))
+        .collect();
+
     let letters = db.iter()
         .filter_map(|item| item.ok())
-        .filter_map(|(key, value)| {
-            match bincode::deserialize::<Letter>(&value) {
-                Ok(mut letter) => {
-                    let key_str = String::from_utf8_lossy(&key);
-                    // info!("Loaded letter with key: {:?}", letter.audio);
-
-                    if let Some(audio_file) = &letter.audio {
-                        // Construct the correct audio URL
-                        // Assuming `audio_file` contains the relative path in the database
-                        // let audio_url = format!("{}{}{}", server_host, static_url_path, audio_file);
-                        let audio_url = format!("{}", audio_file);
-                        info!("Audio URL for letter {}: {}", key_str, audio_url);
-                        letter.audio = Some(audio_url);
-
-                        Some(letter) // Include this letter in the final vector
-                    } else {
-                        // Exclude this letter as its audio is None
-                        None
-                    }
-                },
-                Err(e) => {
-                    error!("Failed to deserialize letter: {}", e);
-                    None
-                }
-            }
+        .filter_map(|(_, value)| bincode::deserialize::<Letter>(&value).ok())
+        .filter(|letter| letter.audio.is_some() && Some(letter.level) == lowest_unfinished_level)
+        .map(|letter| {
+            let progress = stat_map.get(&letter.id)
+                .map(|stat| calculate_progress(stat, get_current_time()))
+                .unwrap_or(0.0);
+            (letter, progress)
         })
-        .collect::<Vec<Letter>>();
+        .filter(|(_, progress)| *progress < SOME_THRESHOLD)
+        .map(|(letter, _)| letter)
+        .collect::<Vec<_>>();
 
     Json(letters)
 }

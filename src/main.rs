@@ -12,6 +12,12 @@ pub mod api {
     pub mod content;
     pub mod audio_files;
     pub mod ping;
+    pub mod level_count;
+    pub mod decay_factor;
+    pub mod get_current_time;
+    pub mod weighted_score;
+    pub mod calculate_progress;
+    pub mod find_lowest_unfinished_level;
 }
 pub mod utils {
     pub mod yml_path;
