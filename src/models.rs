@@ -33,7 +33,7 @@ pub enum ExerciseType {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct Letter {
+pub struct Item {
     pub id: String,
     pub name: Option<String>,
     pub audio: Option<String>,

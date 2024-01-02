@@ -2,7 +2,7 @@ extern crate chrono;
 
 use rocket::{post, State, serde::json::Json};
 use crate::api::get_current_time::get_current_time;
-use crate::models::{Database, Letter, LevelCount, AnswerStat};
+use crate::models::{Database, Item, LevelCount, AnswerStat};
 use super::calculate_progress::calculate_progress;
 
 #[post("/level-count", format = "json", data = "<answer_stats>")]
@@ -14,25 +14,25 @@ pub fn level_count(dbs: &State<Database>, answer_stats: Json<Vec<AnswerStat>>) -
 
     // Initialize level counts
     for item in db.iter().filter_map(|item| item.ok()) {
-        if let Ok(letter) = bincode::deserialize::<Letter>(&item.1) {
-            let entry = level_counts.entry(letter.level).or_insert_with(|| LevelCount {
-                level: letter.level,
+        if let Ok(item) = bincode::deserialize::<Item>(&item.1) {
+            let entry = level_counts.entry(item.level).or_insert_with(|| LevelCount {
+                level: item.level,
                 count: 0,
                 total_correct: 0,
                 total_incorrect: 0,
                 progress: 0.0,
                 total_score: 0.0,
             });
-            entry.count += 1; // Count the number of items (letters) per level
+            entry.count += 1; // Count the number of items (items) per level
         }
     }
 
-    // Aggregate correct and incorrect answers for each letter
+    // Aggregate correct and incorrect answers for each item
     for stat in answer_stats.iter() {
         
-        if let Some(letter) = db.iter().find(|item| item.as_ref().ok().map_or(false, |(key, _)| key == stat.id.as_bytes())) {
-            if let Ok(letter) = bincode::deserialize::<Letter>(&letter.unwrap().1) {
-                if let Some(entry) = level_counts.get_mut(&letter.level) {
+        if let Some(item) = db.iter().find(|item| item.as_ref().ok().map_or(false, |(key, _)| key == stat.id.as_bytes())) {
+            if let Ok(item) = bincode::deserialize::<Item>(&item.unwrap().1) {
+                if let Some(entry) = level_counts.get_mut(&item.level) {
                     entry.total_correct += stat.g;
                     entry.total_incorrect += stat.w;
                     
