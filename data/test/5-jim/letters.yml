@@ -1,0 +1,14 @@
+- name: jīm
+  id: جِيم
+  audio: 5-jim.mp3
+  level: 3
+
+- name: jīm
+  id: جـ
+  audio: 5-jim.mp3
+  level: 2
+
+- name: jīm
+  id: ج
+  audio: 5-jim.mp3
+  level: 1
