@@ -21,6 +21,7 @@ pub mod utils {
     pub mod insert_in_sled;
     pub mod build_mp3_file_url;
     pub mod build_mp3_file_path;
+    pub mod data_from_yaml;
 }
 
 #[tokio::main]
