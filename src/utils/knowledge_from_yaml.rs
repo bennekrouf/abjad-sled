@@ -7,12 +7,13 @@ use serde_yaml;
 
 use crate::utils::{yml_path::get_data_folder_path, build_mp3_file_url::build_mp3_file_url};
 use crate::utils::build_mp3_file_path::build_mp3_file_path;
-use crate::models::{Item, AppConfig};
+use crate::learning::knowledge::Knowledge;
+use crate::models::AppConfig;
 
-pub fn letters_from_yaml(config: &AppConfig) -> Result<(Vec<Item>, String), Box<dyn std::error::Error>> {
-    let letters_yaml_path = get_data_folder_path();
+pub fn knowledge_from_yaml(config: &AppConfig) -> Result<(Vec<Knowledge>, String), Box<dyn std::error::Error>> {
+    let knowledge_yaml_path = get_data_folder_path();
 
-    match traverse_directory(&letters_yaml_path, config) {
+    match traverse_directory(&knowledge_yaml_path, config) {
         Ok((items, yaml_path)) => {
             let yaml_path_str = yaml_path.to_string_lossy().into_owned();
             Ok((items, yaml_path_str))
@@ -25,8 +26,8 @@ pub fn letters_from_yaml(config: &AppConfig) -> Result<(Vec<Item>, String), Box<
 }
 
 // Function to traverse the directory and process the YAML files.
-fn traverse_directory(folder_path: &Path, config: &AppConfig) -> Result<(Vec<Item>, PathBuf), Box<dyn Error>> {
-    let mut items: Vec<Item> = Vec::new();
+fn traverse_directory(folder_path: &Path, config: &AppConfig) -> Result<(Vec<Knowledge>, PathBuf), Box<dyn Error>> {
+    let mut items: Vec<Knowledge> = Vec::new();
 
     for entry in fs::read_dir(folder_path)? {
         let entry = entry?;
@@ -41,7 +42,7 @@ fn traverse_directory(folder_path: &Path, config: &AppConfig) -> Result<(Vec<Ite
                 let mut contents = String::new();
                 file.read_to_string(&mut contents)?;
 
-                match serde_yaml::from_str::<Vec<Item>>(&contents) {
+                match serde_yaml::from_str::<Vec<Knowledge>>(&contents) {
                     Ok(mut data_from_file) => {
                         for item in &mut data_from_file {
                             if let Some(audio) = &item.audio {

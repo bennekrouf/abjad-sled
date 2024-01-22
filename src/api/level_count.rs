@@ -1,12 +1,15 @@
 extern crate chrono;
 
 use rocket::{post, State, serde::json::Json};
-use crate::api::get_current_time::get_current_time;
-use crate::models::{Database, Item, LevelCount, AnswerStat};
-use super::calculate_progress::calculate_progress;
+use crate::models::Database;
+use crate::learning::knowledge::Knowledge;
+use crate::learning::user_stat::UserStat;
+use crate::learning::level_count::LevelCount;
 
-#[post("/level-count", format = "json", data = "<answer_stats>")]
-pub fn level_count(dbs: &State<Database>, answer_stats: Json<Vec<AnswerStat>>) -> Json<Vec<LevelCount>> {
+use crate::learning::calculate_progress::calculate_progress;
+
+#[post("/level-count", format = "json", data = "<user_stats>")]
+pub fn level_count(dbs: &State<Database>, user_stats: Json<Vec<UserStat>>) -> Json<Vec<LevelCount>> {
     let db = &dbs.word_db;
 
     // Use a HashMap to store counts and answer stats for each level
@@ -14,7 +17,7 @@ pub fn level_count(dbs: &State<Database>, answer_stats: Json<Vec<AnswerStat>>) -
 
     // Initialize level counts
     for item in db.iter().filter_map(|item| item.ok()) {
-        if let Ok(item) = bincode::deserialize::<Item>(&item.1) {
+        if let Ok(item) = bincode::deserialize::<Knowledge>(&item.1) {
             let entry = level_counts.entry(item.level).or_insert_with(|| LevelCount {
                 level: item.level,
                 count: 0,
@@ -28,16 +31,15 @@ pub fn level_count(dbs: &State<Database>, answer_stats: Json<Vec<AnswerStat>>) -
     }
 
     // Aggregate correct and incorrect answers for each item
-    for stat in answer_stats.iter() {
+    for stat in user_stats.iter() {
         
         if let Some(item) = db.iter().find(|item| item.as_ref().ok().map_or(false, |(key, _)| key == stat.id.as_bytes())) {
-            if let Ok(item) = bincode::deserialize::<Item>(&item.unwrap().1) {
+            if let Ok(item) = bincode::deserialize::<Knowledge>(&item.unwrap().1) {
                 if let Some(entry) = level_counts.get_mut(&item.level) {
                     entry.total_correct += stat.g;
                     entry.total_incorrect += stat.w;
                     
-                    // let score = weighted_score(&stat, get_current_time());
-                    let score = calculate_progress(&stat, get_current_time());
+                    let score = calculate_progress(&stat);
                     entry.total_score += score;
                     entry.total_score += score; // Add a new field total_score to LevelCount
                 }

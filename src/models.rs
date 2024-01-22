@@ -31,30 +31,3 @@ pub struct AppConfig {
 pub enum ExerciseType {
     FindSound,
 }
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct Item {
-    pub id: String,
-    pub name: Option<String>,
-    pub audio: Option<String>,
-    pub level: i32,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct AnswerStat {
-    pub id: String,
-    pub g: i32,
-    pub w: i32,
-    #[serde(rename = "updatedAt")]
-    pub updated_at: i64,
-}
-
-#[derive(Debug, Serialize)]
-pub struct LevelCount {
-    pub level: i32,
-    pub count: usize,
-    pub total_correct: i32,
-    pub total_incorrect: i32,
-    pub progress: f32,
-    pub total_score: f32,
-}
