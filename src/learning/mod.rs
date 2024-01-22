@@ -11,3 +11,4 @@ pub mod decay_factor;
 pub mod get_current_time;
 pub mod calculate_progress;
 pub mod find_lowest_unfinished_level;
+pub mod knowledge_from_yaml;

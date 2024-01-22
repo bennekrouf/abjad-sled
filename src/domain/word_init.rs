@@ -1,5 +1,5 @@
 // use log::info;
-use crate::utils::knowledge_from_yaml::knowledge_from_yaml;
+use crate::learning::knowledge_from_yaml::knowledge_from_yaml;
 use crate::utils::insert_in_sled;
 use crate::models::{Database, AppConfig};
 
