@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use sled::{Db, Iter};
-use crate::learning::{user_stat::UserStat, knowledge::Levelable};
+use crate::learning::models::{user_stat::UserStat, knowledge::Levelable};
 use crate::utils::read_from_sled::read_from_sled;
 use serde::de::DeserializeOwned;
 

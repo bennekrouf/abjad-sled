@@ -1,5 +1,5 @@
 use crate::utils::data_from_yaml::data_from_yaml;
-use crate::learning::knowledge::Knowledge;
+use crate::learning::models::knowledge::Knowledge;
 use crate::models::{Database, AppConfig};
 use crate::utils::insert_in_sled;
 

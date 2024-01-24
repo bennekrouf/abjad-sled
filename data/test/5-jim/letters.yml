@@ -4,6 +4,16 @@
   level: 3
 
 - name: jīm
+  id: ـج
+  audio: 5-jim.mp3
+  level: 2
+
+- name: jīm
+  id: ـجـ
+  audio: 5-jim.mp3
+  level: 2
+
+- name: jīm
   id: جـ
   audio: 5-jim.mp3
   level: 2

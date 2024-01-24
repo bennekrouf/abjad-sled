@@ -10,6 +10,7 @@ use crate::utils::yml_path;
 use crate::api::content::content;
 use crate::api::audio_files::audio_files;
 use crate::api::ping::ping;
+use crate::api::level_count_detail::level_count_detail;
 pub struct CORS;
 
 #[rocket::async_trait]
@@ -64,6 +65,7 @@ fn rocket() -> Rocket<Build> {
             content,
             audio_files,
             ping,
-            level_count
+            level_count,
+            level_count_detail
         ])
 }

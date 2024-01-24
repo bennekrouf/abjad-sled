@@ -1,12 +1,12 @@
 use std::collections::HashMap;
 use serde::Deserialize;
-use crate::learning::{user_stat::UserStat, knowledge::Levelable};
+use super::models::{user_stat::UserStat, knowledge::Levelable};
 use super::calculate_progress::calculate_progress;
 
-const SOME_THRESHOLD:f32 = 100.0;
+const PROGRESS_THRESHOLD:f32 = 100.0;
 
 // Function to perform the computation
-pub fn compute_lowest_unfinished_level<'de, T>(entries: &HashMap<String, T>, user_stats: &[UserStat]) -> Option<i32>
+pub fn compute_lowest_unfinished_level<'de, T>(entries: &HashMap<String, T>, user_stats: &[UserStat], threshold: i64) -> Option<i32>
     where T: PartialEq + Clone + Deserialize<'de> + Levelable,
 {
     // If user_stats is empty, return the first level
@@ -19,7 +19,7 @@ pub fn compute_lowest_unfinished_level<'de, T>(entries: &HashMap<String, T>, use
     // Iterate over the retrieved entries
     for (key, item) in entries {
         let key_str = key.clone();
-        let progress = calculate_progress(user_stats.iter().find(|s| s.id == key_str).unwrap());
+        let progress = calculate_progress(user_stats.iter().find(|s| s.id == key_str).unwrap(), threshold);
         let entry = level_aggregate.entry(item.level()).or_insert((0.0, 0));
         entry.0 += progress;
         entry.1 += 1;
@@ -37,7 +37,7 @@ pub fn compute_lowest_unfinished_level<'de, T>(entries: &HashMap<String, T>, use
 
     let lowest_level = level_progress
         .iter()
-        .filter(|&(_, &progress)| progress < SOME_THRESHOLD)
+        .filter(|&(_, &progress)| progress < PROGRESS_THRESHOLD)
         .min_by_key(|&(level, _)| level)
         .map(|(level, _)| *level);
 

@@ -3,5 +3,5 @@ debian_path: '/home/t5h0qo/code/poc/abjad-sled/data'
 port: 7001
 domain: '127.0.0.1'
 static_files_path: 'files'
-decay_rate_factor_correct: 0.9999999998
-decay_rate_factor_incorrect: 2.0
+decay_rate_factor_correct: 0.0 # 0.0 no decay
+decay_rate_factor_incorrect: 0.0

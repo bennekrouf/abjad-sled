@@ -7,4 +7,7 @@ pub struct UserStat {
     pub w: i32,
     #[serde(rename = "updatedAt")]
     pub updated_at: i64,
+    #[serde(rename = "lastAnsweredAt")]
+    pub last_answered_at: i64,
+    pub repetitions: Option<i32>, 
 }

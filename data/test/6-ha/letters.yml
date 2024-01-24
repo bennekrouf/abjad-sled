@@ -1,0 +1,24 @@
+- name: ḥāʾ
+  id: حَاء
+  audio: 6-ha.mp3
+  level: 3
+
+- name: ḥāʾ
+  id: ـح
+  audio: 6-ha.mp3
+  level: 2
+
+- name: ḥāʾ
+  id: ـحـ
+  audio: 6-ha.mp3
+  level: 2
+
+- name: ḥāʾ
+  id: حـ
+  audio: 6-ha.mp3
+  level: 2
+
+- name: ḥāʾ
+  id: ح
+  audio: 6-ha.mp3
+  level: 1

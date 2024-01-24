@@ -4,7 +4,7 @@ use std::path::{Path, PathBuf};
 use std::error::Error;
 use serde::de::DeserializeOwned;
 use serde_yaml;
-use crate::learning::knowledge::HasAudio;
+use crate::learning::models::knowledge::HasAudio;
 
 use crate::models::AppConfig;
 use crate::utils::{

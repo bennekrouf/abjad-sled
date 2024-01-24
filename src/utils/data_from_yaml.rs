@@ -1,6 +1,6 @@
 // use crate::learning::knowledge::Knowledge;
 use crate::models::AppConfig;
-use crate::learning::knowledge::HasAudio;
+use crate::learning::models::knowledge::HasAudio;
 use serde::de::DeserializeOwned; 
 
 use crate::utils::{

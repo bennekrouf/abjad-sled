@@ -1,0 +1,24 @@
+- name: sīn
+  id: سِين
+  audio: 12-sin.mp3
+  level: 3
+
+- name: sīn
+  id: ـس
+  audio: 12-sin.mp3
+  level: 2
+
+- name: sīn
+  id: ـسـ
+  audio: 12-sin.mp3
+  level: 2
+
+- name: sīn
+  id: سـ
+  audio: 12-sin.mp3
+  level: 2
+
+- name: sīn
+  id: س
+  audio: 12-sin.mp3
+  level: 1
