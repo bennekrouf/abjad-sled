@@ -1,20 +1,18 @@
 use std::collections::HashMap;
-// use log::info;
 use rocket::{post, State, serde::json::Json};
 // use log::{info, error};
 use crate::models::{Database, AppConfig};
 use crate::learning::knowledge::Knowledge;
 use crate::learning::user_stat::UserStat;
-use crate::learning::find_lowest_unfinished_level::find_lowest_unfinished_level;
+use crate::utils::find_lowest_unfinished_level::find_lowest_unfinished_level;
 use crate::learning::calculate_progress::calculate_progress;
-pub struct CORS;
 
 const SOME_THRESHOLD:f32 = 100.0;
 
 #[post("/content", format = "json", data = "<user_stats>")]
 pub fn content(dbs: &State<Database>, _config: &State<AppConfig>, user_stats: Json<Vec<UserStat>>) -> Json<Vec<Knowledge>> {
     let db = &dbs.word_db;
-    let lowest_unfinished_level = find_lowest_unfinished_level(dbs, &user_stats);
+    let lowest_unfinished_level = find_lowest_unfinished_level::<Knowledge>(db, &user_stats);
 
     // info!("lowest_unfinished_level : {}", lowest_unfinished_level.unwrap().clone());
     let stat_map: HashMap<String, &UserStat> = user_stats.iter()

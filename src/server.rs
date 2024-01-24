@@ -5,7 +5,6 @@ use std::env;
 
 use crate::{domain::all_db, api::level_count::level_count};
 use crate::utils::data_folder_path;
-// use crate::utils::yml_path::load_config;
 use crate::utils::yml_path;
 
 use crate::api::content::content;
@@ -32,7 +31,7 @@ impl Fairing for CORS {
 
 pub async fn start_server() {
     // Set the log level based on the RUST_LOG environment variable
-    env::set_var("RUST_LOG", "info"); // Adjust log level as needed: error, warn, info, debug, trace
+    env::set_var("RUST_LOG", "info"); // error, warn, info, debug, trace
     env_logger::Builder::from_env(env_logger::Env::default())
         .format_timestamp(None) // Disable timestamp
         .format_module_path(false)
@@ -51,16 +50,7 @@ fn rocket() -> Rocket<Build> {
         config.clone() // Assuming AppConfig implements Clone
     };
 
-    // // Get the APP_ENV environment variable
-    // let app_env = env::var("APP_ENV").unwrap_or_else(|_| "local".to_string());
-
-    // // Load the config based on APP_ENV
-    // let config_data = load_config(&app_env);
     let all_db = all_db::init(&data_folder_path, &config_data);
-
-    // let mut config = Config::figment().clone();
-    // config.set_port(config_data.port);
-
     let figment = Config::figment()
         .merge(("port", config_data.port));
 

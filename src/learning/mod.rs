@@ -10,4 +10,4 @@ pub mod level_count;
 pub mod decay_factor;
 pub mod get_current_time;
 pub mod calculate_progress;
-pub mod find_lowest_unfinished_level;
+pub mod compute_lowest_unfinished_level;
