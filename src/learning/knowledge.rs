@@ -17,3 +17,18 @@ impl Levelable for Knowledge {
         self.level
     }
 }
+
+pub trait HasAudio {
+    fn audio(&self) -> Option<&str>;
+    fn set_audio(&mut self, audio: Option<String>);
+}
+
+impl HasAudio for Knowledge {
+    fn audio(&self) -> Option<&str> {
+        self.audio.as_deref()
+    }
+
+    fn set_audio(&mut self, audio: Option<String>) {
+        self.audio = audio;
+    }
+}
