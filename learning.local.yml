@@ -1,0 +1,3 @@
+decay_rate_factor_correct: 0.0 # 0.0 no decay
+decay_rate_factor_incorrect: 0.0
+consecutive_hours_threshold: 0

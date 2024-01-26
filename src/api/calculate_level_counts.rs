@@ -1,10 +1,10 @@
 use crate::models::Database;
 use crate::learning::models::{knowledge::Knowledge, user_stat::UserStat, level_count::LevelCount};
 use crate::learning::calculate_progress::calculate_progress;
+use crate::learning::models::learning_config::LearningConfig;
 
-const CONSECUTIVE_HOURS_THRESHOLD: i64 = 0;
+pub fn calculate_level_counts(config: &LearningConfig, db: &Database, user_stats: &Vec<UserStat>) -> Vec<LevelCount> {
 
-pub fn calculate_level_counts(db: &Database, user_stats: &Vec<UserStat>) -> Vec<LevelCount> {
     // Use iterators and functional programming to calculate level counts
     let mut level_counts: Vec<LevelCount> = db.word_db.iter()
         .filter_map(|item| item.ok())
@@ -35,7 +35,7 @@ pub fn calculate_level_counts(db: &Database, user_stats: &Vec<UserStat>) -> Vec<
         if let Some(entry) = level_counts.iter_mut().find(|level_count| level_count.level == item.level) {
             entry.total_correct += stat.g;
             entry.total_incorrect += stat.w;
-            entry.total_score += calculate_progress(&stat, CONSECUTIVE_HOURS_THRESHOLD);
+            entry.total_score += calculate_progress(config, &stat);
         }
     }
 

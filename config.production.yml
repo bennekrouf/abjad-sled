@@ -3,5 +3,3 @@ debian_path: '/home/similar/abjad-sled/data'
 port: 7000
 domain: 'abjad.mayorana.ch'
 static_files_path: 'files' 
-decay_rate_factor_correct: 0.5
-decay_rate_factor_incorrect: 2.0

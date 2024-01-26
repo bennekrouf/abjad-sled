@@ -2,11 +2,12 @@ use std::collections::HashMap;
 use serde::Deserialize;
 use super::models::{user_stat::UserStat, knowledge::Levelable};
 use super::calculate_progress::calculate_progress;
+use super::models::learning_config::LearningConfig;
 
 const PROGRESS_THRESHOLD:f32 = 100.0;
 
 // Function to perform the computation
-pub fn compute_lowest_unfinished_level<'de, T>(entries: &HashMap<String, T>, user_stats: &[UserStat], threshold: i64) -> Option<i32>
+pub fn compute_lowest_unfinished_level<'de, T>(config: &LearningConfig, entries: &HashMap<String, T>, user_stats: &[UserStat]) -> Option<i32>
     where T: PartialEq + Clone + Deserialize<'de> + Levelable,
 {
     // If user_stats is empty, return the first level
@@ -19,7 +20,7 @@ pub fn compute_lowest_unfinished_level<'de, T>(entries: &HashMap<String, T>, use
     // Iterate over the retrieved entries
     for (key, item) in entries {
         let key_str = key.clone();
-        let progress = calculate_progress(user_stats.iter().find(|s| s.id == key_str).unwrap(), threshold);
+        let progress = calculate_progress(config, user_stats.iter().find(|s| s.id == key_str).unwrap());
         let entry = level_aggregate.entry(item.level()).or_insert((0.0, 0));
         entry.0 += progress;
         entry.1 += 1;

@@ -4,18 +4,36 @@ use std::env;
 use crate::models::AppConfig;
 use lazy_static::lazy_static;
 use std::sync::Mutex;
+use crate::learning::models::learning_config::LearningConfig;
+// use serde::Deserialize;
+use serde::de::DeserializeOwned;
+
+pub trait Config {
+    fn load(config_path: &str) -> Self;
+}
 
 lazy_static! {
-    pub static ref CONFIG: Mutex<AppConfig> = Mutex::new(load_app_config());
+    pub static ref CONFIG: Mutex<AppConfig> = Mutex::new(AppConfig::load("config"));
+    pub static ref LEARNING: Mutex<LearningConfig> = Mutex::new(LearningConfig::load("learning"));
 }
 
-fn load_app_config() -> AppConfig {
+impl Config for AppConfig {
+    fn load(config_path: &str) -> Self {
+        load_config(config_path)
+    }
+}
+
+impl Config for LearningConfig {
+    fn load(config_path: &str) -> Self {
+        load_config(config_path)
+    }
+}
+
+pub fn load_config<T>(config_path: &str) -> T
+    where T: DeserializeOwned,
+{
     let app_env = env::var("APP_ENV").unwrap_or_else(|_| "local".to_string());
-    load_config(&app_env)
-}
-
-pub fn load_config(app_env: &str) -> AppConfig {
-    let config_path = format!("config.{}.yml", app_env);
+    let config_path = format!("{}.{}.yml", config_path, app_env);
     let config_str = std::fs::read_to_string(&config_path)
         .expect("Failed to read config file");
     serde_yaml::from_str(&config_str).expect("Failed to parse config file")

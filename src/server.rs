@@ -5,13 +5,17 @@ use std::env;
 
 use crate::{domain::all_db, api::level_count::level_count};
 use crate::utils::data_folder_path;
-use crate::utils::yml_path;
+// use crate::utils::yml_path;
+use crate::utils::yml_path::{LEARNING, CONFIG};
 
 use crate::api::content::content;
 use crate::api::audio_files::audio_files;
 use crate::api::ping::ping;
 use crate::api::level_count_detail::level_count_detail;
+
+
 pub struct CORS;
+
 
 #[rocket::async_trait]
 impl Fairing for CORS {
@@ -46,21 +50,20 @@ fn rocket() -> Rocket<Build> {
     let data_folder_path = data_folder_path::get();
     println!("Path to wordsDB: {:?}", data_folder_path);
 
-    let config_data = {
-        let config = yml_path::CONFIG.lock().unwrap();
-        config.clone() // Assuming AppConfig implements Clone
-    };
+    // Load both configurations
+    let app_config = CONFIG.lock().unwrap().clone();
+    let learning_config = LEARNING.lock().unwrap().clone();
 
-    let all_db = all_db::init(&data_folder_path, &config_data);
+    let all_db = all_db::init(&data_folder_path, &app_config);
     let figment = Config::figment()
-        .merge(("port", config_data.port));
+        .merge(("port", app_config.port));
 
-    // Start the Rocket application with the custom configuration
     rocket::build()
         .configure(figment)
         .attach(CORS)
-        .manage(config_data)
         .manage(all_db.clone())
+        .manage(app_config) // Manage app_config
+        .manage(learning_config) // Manage learning_config
         .mount("/", routes![
             content,
             audio_files,

@@ -1,5 +1,3 @@
-use crate::utils::yml_path;
-
 // calculates the reduction (decay) of learning retention 
 // or memory strength over a period of time
 // How much value is lost per unit of time, adjusted per year the applied to the 
@@ -14,8 +12,9 @@ use crate::utils::yml_path;
 // answer is incorrect
 // 1 means 100% retention (no decay), 0 means 0% retention (complete decay)
 
-pub fn decay_factor(updated_at: i64, current_time: i64, is_correct: bool) -> f32 {
-    let config = yml_path::CONFIG.lock().unwrap();
+use super::models::learning_config::LearningConfig;
+
+pub fn decay_factor(config: &LearningConfig, updated_at: i64, current_time: i64, is_correct: bool) -> f32 {
     let decay_rate_factor = if is_correct {
         config.decay_rate_factor_correct
     } else {

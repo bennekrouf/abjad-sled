@@ -23,8 +23,6 @@ pub struct AppConfig {
     pub port: u16,
     pub domain: String,
     pub static_files_path: String,
-    pub decay_rate_factor_correct: f32,
-    pub decay_rate_factor_incorrect: f32,
 }
 
 #[derive(Serialize, Deserialize, Debug, Hash, Eq, PartialEq, Clone, Copy)]

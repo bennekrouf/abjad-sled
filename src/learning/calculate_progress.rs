@@ -4,18 +4,19 @@ use crate::learning::get_current_time::get_current_time;
 use super::has_reached_consecutive_hours::has_reached_consecutive_hours;
 use super::calculate_retention_score::calculate_retention_score;
 use super::scale_to_percentage::scale_to_percentage;
+use super::models::learning_config::LearningConfig;
 
-pub fn calculate_progress(stat: &UserStat, threshold: i64) -> f32 {
+pub fn calculate_progress(config: &LearningConfig, stat: &UserStat) -> f32 {
     let current_time = get_current_time();
-    let decay_correct = decay_factor(stat.updated_at, current_time, true);
-    let decay_incorrect = decay_factor(stat.updated_at, current_time, false);
+    let decay_correct = decay_factor(config, stat.updated_at, current_time, true);
+    let decay_incorrect = decay_factor(config, stat.updated_at, current_time, false);
     
     // Calculate retention score
     let retention_score = calculate_retention_score(stat);
 
     let mut score = (stat.g as f32 * decay_correct) - (stat.w as f32 * decay_incorrect) + retention_score;
 
-    if has_reached_consecutive_hours(&stat, threshold) {
+    if has_reached_consecutive_hours(&stat, config.consecutive_hours_threshold) {
         score += score;
     }
 
