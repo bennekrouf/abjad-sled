@@ -8,10 +8,8 @@ use crate::utils::{
     traverse_directory::traverse_directory,
 };
 
-pub fn data_from_yaml<'de, T>(config: &AppConfig)
-    -> Result<(Vec<T>, String), Box<dyn std::error::Error>>
-    where
-        T: Clone + DeserializeOwned + std::fmt::Debug + HasAudio,
+pub fn data_from_yaml<'de, T>(config: &AppConfig) -> Result<(Vec<T>, String), Box<dyn std::error::Error>>
+    where T: Clone + DeserializeOwned + std::fmt::Debug + HasAudio,
 {
     let data_yaml_path = yml_path::get_data_folder_path();
 

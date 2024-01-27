@@ -1,3 +1,4 @@
-decay_rate_factor_correct: 0.0 # 0.0 no decay
+decay_rate_factor_correct: 0.5 # 0.0 no decay
 decay_rate_factor_incorrect: 0.0
-consecutive_hours_threshold: 0
+consecutive_hours_threshold: 3
+progress_threshold: 100 # higher means easier to recall

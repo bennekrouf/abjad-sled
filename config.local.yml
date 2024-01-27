@@ -1,5 +1,5 @@
 macos_path: '/Users/mb/code/abjad-sled/data'
 debian_path: '/home/t5h0qo/code/poc/abjad-sled/data'
-port: 7002
+port: 7001
 domain: '127.0.0.1'
 static_files_path: 'files'

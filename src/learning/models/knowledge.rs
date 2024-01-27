@@ -5,7 +5,7 @@ pub struct Knowledge {
     pub id: String,
     pub name: Option<String>,
     pub audio: Option<String>,
-    pub level: i32,
+    pub level: Option<i32>,
 }
 
 pub trait Levelable {
@@ -14,7 +14,7 @@ pub trait Levelable {
 
 impl Levelable for Knowledge {
     fn level(&self) -> i32 {
-        self.level
+        self.level.unwrap()
     }
 }
 

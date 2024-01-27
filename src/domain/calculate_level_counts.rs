@@ -1,17 +1,19 @@
+use crate::learning::models::user_stat::UserStat;
 use crate::models::Database;
-use crate::learning::models::{knowledge::Knowledge, user_stat::UserStat, level_count::LevelCount};
+use crate::learning::models::{
+    knowledge::Knowledge,
+    level_count::LevelCount,
+    learning_config::LearningConfig
+};
 use crate::learning::calculate_progress::calculate_progress;
-use crate::learning::models::learning_config::LearningConfig;
 
 pub fn calculate_level_counts(config: &LearningConfig, db: &Database, user_stats: &Vec<UserStat>) -> Vec<LevelCount> {
-
-    // Use iterators and functional programming to calculate level counts
     let mut level_counts: Vec<LevelCount> = db.word_db.iter()
         .filter_map(|item| item.ok())
         .filter_map(|(_, data)| bincode::deserialize::<Knowledge>(&data).ok())
         .fold(std::collections::HashMap::new(), |mut counts, item| {
             let entry = counts.entry(item.level).or_insert_with(|| LevelCount {
-                level: item.level,
+                level: item.level.unwrap(),
                 count: 0,
                 total_correct: 0,
                 total_incorrect: 0,
@@ -28,11 +30,11 @@ pub fn calculate_level_counts(config: &LearningConfig, db: &Database, user_stats
     for (stat, item) in user_stats.iter()
         .flat_map(|stat| {
             db.word_db.iter()
-                .find(|item| item.as_ref().ok().map_or(false, |(key, _)| key == stat.id.as_bytes()))
+                .find(|item| item.as_ref().ok().map_or(false, |(key, _)| key == stat.knowledge.as_ref().unwrap().id.as_bytes()))
                 .and_then(|item| bincode::deserialize::<Knowledge>(&item.unwrap().1).ok())
                 .map(|item| (stat, item))
         }) {
-        if let Some(entry) = level_counts.iter_mut().find(|level_count| level_count.level == item.level) {
+        if let Some(entry) = level_counts.iter_mut().find(|level_count| level_count.level == item.level.unwrap()) {
             entry.total_correct += stat.g;
             entry.total_incorrect += stat.w;
             entry.total_score += calculate_progress(config, &stat);
