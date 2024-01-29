@@ -1,17 +1,17 @@
 use std::collections::HashMap;
-use crate::learning::models::{knowledge::Knowledge, knowledge_progress::Analytic, user_stat::UserStat, learning_config::LearningConfig};
-use crate::learning::calculate_progress::calculate_progress;
+use crate::learning::models::{knowledge::Knowledge, analytic::Analytic, user_stat::UserStat, learning_config::LearningConfig};
+use crate::learning::compute_user_stat_progress::compute_user_stat_progress;
 
-pub fn compute_knowledge_progress(
+pub fn compute_analytics(
     knowledge_entries: HashMap<String, Knowledge>, 
     user_stats: &[UserStat], 
     config: &LearningConfig
 ) -> HashMap<String, Analytic> {
     knowledge_entries.into_iter().map(|(key_str, knowledge)| {
-        let user_stat = user_stats.iter().find(|&us| us.knowledge.as_ref().unwrap().id == key_str);
+        let user_stat = user_stats.iter().find(|&us| us.id == key_str);
 
         let (progress) = user_stat
-            .map(|us| (calculate_progress(config, us)))
+            .map(|us| (compute_user_stat_progress(config, us)))
             .unwrap_or((0.0));
         let id = knowledge.id.clone();
 

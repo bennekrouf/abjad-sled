@@ -4,17 +4,17 @@ use crate::learning::{
     get_current_time::get_current_time
 };
 use super::has_reached_consecutive_hours::has_reached_consecutive_hours;
-use super::calculate_retention_score::calculate_retention_score;
+use super::compute_user_stat_retention_score::compute_user_stat_retention_score;
 use super::scale_to_percentage::scale_to_percentage;
 use super::models::learning_config::LearningConfig;
 
-pub fn calculate_progress(config: &LearningConfig, stat: &UserStat) -> f32 {
+pub fn compute_user_stat_progress(config: &LearningConfig, stat: &UserStat) -> f32 {
     let current_time = get_current_time();
     let decay_correct = decay_factor(config, stat.updated_at, current_time, true);
     let decay_incorrect = decay_factor(config, stat.updated_at, current_time, false);
     
     // Calculate retention score
-    let retention_score = calculate_retention_score(config, stat);
+    let retention_score = compute_user_stat_retention_score(config, stat);
 
     let mut score = (stat.g as f32 * decay_correct) - (stat.w as f32 * decay_incorrect) + retention_score;
 

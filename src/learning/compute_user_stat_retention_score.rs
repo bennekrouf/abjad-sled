@@ -7,7 +7,7 @@ use super::calculate_decay_rate::calculate_decay_rate;
 
 const SECONDS_IN_A_DAY: i64 = 24 * 60 * 60;
 
-pub fn calculate_retention_score(config: &LearningConfig, user_stat: &UserStat) -> f32 {
+pub fn compute_user_stat_retention_score(config: &LearningConfig, user_stat: &UserStat) -> f32 {
     // Calculate elapsed time since last interaction (in days)
     let elapsed_days = (get_current_time() - user_stat.updated_at) / SECONDS_IN_A_DAY;
 

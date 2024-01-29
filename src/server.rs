@@ -3,16 +3,17 @@ use rocket::{Rocket, Build, Request, Response};
 use log::LevelFilter;
 use std::env;
 
-use crate::{domain::all_db, api::{content::content, synthesis::synthesis}};
-use crate::utils::{
+// use crate::{domain::all_db, api::{user_content::content, user_synthesis::synthesis}};
+use crate::{api::user_synthesis::user_synthesis, domain::all_db, utils::{
     yml_path::{LEARNING, CONFIG},
     data_folder_path
-};
+}};
 
 use crate::api::{
     audio_files::audio_files,
     ping::ping,
-    analytics::analytics,
+    get_knowledge_entries::get_knowledge_entries,
+    // user_stats_analytics::analytics,
 };
 
 pub struct CORS;
@@ -65,10 +66,12 @@ fn rocket() -> Rocket<Build> {
         .manage(app_config) // Manage app_config
         .manage(learning_config) // Manage learning_config
         .mount("/", routes![
-            content,
+            // content,
             audio_files,
             ping,
-            synthesis,
-            analytics
+            // synthesis,
+            // analytics,
+            user_synthesis,
+            get_knowledge_entries
         ])
 }
