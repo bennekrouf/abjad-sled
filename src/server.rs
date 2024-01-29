@@ -14,6 +14,7 @@ use crate::api::{
     ping::ping,
     get_knowledge_entries::get_knowledge_entries,
     // user_stats_analytics::analytics,
+    user_stats_analytics::user_stats_analytics,
 };
 
 pub struct CORS;
@@ -71,6 +72,7 @@ fn rocket() -> Rocket<Build> {
             ping,
             // synthesis,
             // analytics,
+            user_stats_analytics,
             user_synthesis,
             get_knowledge_entries
         ])
