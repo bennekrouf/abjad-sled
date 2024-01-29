@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct LevelCount {
+pub struct LevelAnalytics {
     pub level: i32,
     pub count: usize,
     pub total_correct: i32,
