@@ -10,22 +10,30 @@ use super::models::learning_config::LearningConfig;
 
 pub fn compute_user_stat_progress(config: &LearningConfig, stat: &UserStat) -> f32 {
     let current_time = get_current_time();
+    println!("Current Time: {}", current_time);
+
     let decay_correct = decay_factor(config, stat.updated_at, current_time, true);
     let decay_incorrect = decay_factor(config, stat.updated_at, current_time, false);
-    
+    println!("Decay Correct: {}, Decay Incorrect: {}", decay_correct, decay_incorrect);
+
     // Calculate retention score
     let retention_score = compute_user_stat_retention_score(config, stat);
+    println!("Retention Score: {}", retention_score);
 
     let mut score = (stat.g as f32 * decay_correct) - (stat.w as f32 * decay_incorrect) + retention_score;
+    println!("Initial Score: {}", score);
 
     if has_reached_consecutive_hours(&stat, config.consecutive_hours_threshold) {
+        println!("Has reached consecutive hours threshold");
         score += score;
     }
+    println!("Score after checking consecutive hours: {}", score);
+    score
+    // // Scale the combined score to a percentage (assuming min_value and max_value)
+    // let min_value = 2.0;
+    // let max_value = 50.0;
+    // let percentage = scale_to_percentage(score, min_value, max_value);
+    // println!("Scaled Percentage: {}", percentage);
 
-    // Scale the combined score to a percentage (assuming min_value and max_value)
-    let min_value = 2.0;
-    let max_value = 5.0;
-    let percentage = scale_to_percentage(score, min_value, max_value);
-
-    percentage
+    // percentage
 }
