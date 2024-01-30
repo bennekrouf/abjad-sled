@@ -7,4 +7,6 @@ pub struct LearningConfig {
     pub consecutive_hours_threshold: i64,
     pub progress_threshold: f32,
     pub streak_bonus: i32,
+    pub min_score: i32,
+    pub max_score: i32,
 }

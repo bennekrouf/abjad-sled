@@ -32,8 +32,8 @@ pub fn compute_user_stat_progress(config: &LearningConfig, stat: &UserStat) -> f
     println!("Score after checking consecutive hours: {}", score);
 
     // Scale the combined score to a percentage (assuming min_value and max_value)
-    let min_value = 2.0;
-    let max_value = 50.0;
+    let min_value = config.min_score as f32;
+    let max_value = config.max_score as f32;
     let percentage = scale_to_percentage(score, min_value, max_value);
     println!("Scaled Percentage: {}", percentage);
 
