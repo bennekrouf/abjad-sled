@@ -5,7 +5,7 @@ use std::env;
 
 use crate::{
     api::user_content::user_content,
-    api::user_synthesis::user_synthesis,
+    api::level_analytics::level_analytics,
     domain::all_db, utils::{yml_path::{LEARNING, CONFIG},data_folder_path}
 };
 
@@ -71,7 +71,7 @@ fn rocket() -> Rocket<Build> {
             audio_files,
             ping,
             user_stats_analytics,
-            user_synthesis,
+            level_analytics,
             get_knowledge_entries
         ])
 }
