@@ -11,24 +11,24 @@ pub fn user_analytics(
     db: &Db, 
     user_stats: &[UserStat], 
     config: &LearningConfig, 
-    level: Option<i32>
+    level: Option<u32>
 ) -> Vec<Analytic> {
     let knowledge_entries = knowledge_entries(db);
     let knowledge_progress_map:(String, Analytic) = knowledge_entries.into_iter().map(|(key_str, knowledge)| {
-            let user_stat = user_stats.iter().find(|&us| us.id == key_str);
+        let user_stat = user_stats.iter().find(|&us| us.id == key_str);
 
-            let (progress) = user_stat
-                .map(|us| (compute_user_stat_progress(config, us)))
-                .unwrap_or((0.0));
-            let id = knowledge.id.clone();
+        let (progress) = user_stat
+            .map(|us| (compute_user_stat_progress(config, us)))
+            .unwrap_or((0.0));
+        let id = knowledge.id.clone();
 
-            let analytic = Analytic {
-                id,
-                progress,
-            };
+        let analytic = Analytic {
+            id,
+            progress,
+        };
 
-            (key_str, analytic)
-        }).collect();
+        (key_str, analytic)
+    }).collect();
 
     let mut analytics: Vec<Analytic> = knowledge_progress_map.into_iter()
         .map(|(_, analytic)| analytic)

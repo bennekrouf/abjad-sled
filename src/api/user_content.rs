@@ -12,7 +12,7 @@ pub fn user_content(
     dbs: &State<Database>, 
     config: &State<LearningConfig>, 
     user_stats: Json<Vec<UserStat>>, 
-    level: Option<i32>
+    level: Option<u32>
 ) -> Json<Vec<Analytic>> {
     let db = &dbs.word_db;
     let knowledges = user_analytics(db, &user_stats.into_inner(), &config, level);

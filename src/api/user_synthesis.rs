@@ -11,7 +11,7 @@ use crate::domain::user_level_analytics::user_level_analytics;
 pub fn user_synthesis(config: &State<LearningConfig>, dbs: &State<Database>, user_stats: Json<Vec<UserStat>>) -> Json<Vec<LevelAnalytics>> {
     let level_counts = user_level_analytics(&**config, dbs, &user_stats);
 
-    // // Calculate progress for each level
+    // Calculate progress for each level
     // for synthesis in &mut level_counts {
     //     let max_score = synthesis.count as f32;
     //     synthesis.progress = ((synthesis.total_correct + synthesis.total_incorrect) / max_score).max(0.0).min(1.0) * 100.0;

@@ -5,15 +5,15 @@ pub struct Knowledge {
     pub id: String,
     pub name: Option<String>,
     pub audio: Option<String>,
-    pub level: Option<i32>,
+    pub level: Option<u32>,
 }
 
 pub trait Levelable {
-    fn level(&self) -> i32;
+    fn level(&self) -> u32;
 }
 
 impl Levelable for Knowledge {
-    fn level(&self) -> i32 {
+    fn level(&self) -> u32 {
         self.level.unwrap()
     }
 }

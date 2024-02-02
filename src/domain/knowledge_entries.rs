@@ -13,7 +13,7 @@ pub fn knowledge_entries(db: &Db, level: Option<i32>) -> HashMap<String, Knowled
             // Filter out entries without audio
             knowledge.audio.is_some() &&
             // Filter by level if provided
-            level.map_or(true, |lvl| knowledge.level.map_or(false, |k_lvl| k_lvl == lvl))
+            level.map_or(true, |lvl| knowledge.level.map_or(false, |k_lvl| k_lvl == lvl as u32))
         })
         .map(|knowledge| (knowledge.id.clone(), knowledge))
         .collect()

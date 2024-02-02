@@ -4,4 +4,4 @@ consecutive_hours_threshold: 3 # 2 to 6 hours
 progress_threshold: 40 # higher means easier to recall 20 to 60
 streak_bonus: 5
 min_score: 2
-max_score: 300
+max_score: 120
