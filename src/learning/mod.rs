@@ -7,4 +7,3 @@ pub mod compute_user_stats_analytics;
 pub mod compute_user_stat_retention_score;
 pub mod scale_to_percentage;
 pub mod calculate_decay_rate;
-pub mod compute_analytics;

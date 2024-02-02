@@ -1,4 +1,4 @@
-// pub mod user_content;
+pub mod user_content;
 pub mod audio_files;
 pub mod ping;
 pub mod user_synthesis;

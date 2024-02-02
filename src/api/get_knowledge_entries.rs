@@ -7,7 +7,7 @@ use crate::domain::knowledge_entries::knowledge_entries;
 #[get("/knowledge-entries?<level>", format = "json")]
 pub fn get_knowledge_entries(
     dbs: &State<Database>,
-    level: Option<i32>
+    level: Option<u8>
 ) -> Json<HashMap<String, Knowledge>> {
     let db = &dbs.word_db;
     let knowledge_map = knowledge_entries(db, level);

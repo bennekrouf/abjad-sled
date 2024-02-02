@@ -3,11 +3,11 @@ use rocket::{Rocket, Build, Request, Response};
 use log::LevelFilter;
 use std::env;
 
-// use crate::{domain::all_db, api::{user_content::content, user_synthesis::synthesis}};
-use crate::{api::user_synthesis::user_synthesis, domain::all_db, utils::{
-    yml_path::{LEARNING, CONFIG},
-    data_folder_path
-}};
+use crate::{
+    api::user_content::user_content,
+    api::user_synthesis::user_synthesis,
+    domain::all_db, utils::{yml_path::{LEARNING, CONFIG},data_folder_path}
+};
 
 use crate::api::{
     audio_files::audio_files,
@@ -67,11 +67,9 @@ fn rocket() -> Rocket<Build> {
         .manage(app_config) // Manage app_config
         .manage(learning_config) // Manage learning_config
         .mount("/", routes![
-            // content,
+            user_content,
             audio_files,
             ping,
-            // synthesis,
-            // analytics,
             user_stats_analytics,
             user_synthesis,
             get_knowledge_entries

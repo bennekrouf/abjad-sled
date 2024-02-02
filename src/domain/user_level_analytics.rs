@@ -8,7 +8,7 @@ use crate::learning::models::{
 use crate::learning::compute_user_stat_progress::compute_user_stat_progress;
 
 pub fn user_level_analytics(config: &LearningConfig, db: &Database, user_stats: &Vec<UserStat>) -> Vec<LevelAnalytics> {
-    let mut level_progress: std::collections::HashMap<u32, (f32, u32)> = std::collections::HashMap::new();
+    let mut level_progress: std::collections::HashMap<u8, (f32, u8)> = std::collections::HashMap::new();
 
     // Initialize level counts and accumulate progress separately
     let mut level_counts: Vec<LevelAnalytics> = db.word_db.iter()
