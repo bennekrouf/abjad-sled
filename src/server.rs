@@ -13,7 +13,6 @@ use crate::api::{
     audio_files::audio_files,
     ping::ping,
     get_knowledge_entries::get_knowledge_entries,
-    // user_stats_analytics::analytics,
     user_stats_analytics::user_stats_analytics,
 };
 
@@ -51,21 +50,22 @@ pub async fn start_server() {
 fn rocket() -> Rocket<Build> {
     let data_folder_path = data_folder_path::get();
     println!("Path to wordsDB: {:?}", data_folder_path);
-
+    
     // Load both configurations
     let app_config = CONFIG.lock().unwrap().clone();
     let learning_config = LEARNING.lock().unwrap().clone();
-
-    let all_db = all_db::init(&data_folder_path, &app_config);
+    
     let figment = Config::figment()
-        .merge(("port", app_config.port));
-
+    .merge(("port", app_config.port));
+    
+    let all_db = all_db::init(&data_folder_path, &app_config);
+    
     rocket::build()
         .configure(figment)
         .attach(CORS)
         .manage(all_db.clone())
-        .manage(app_config) // Manage app_config
-        .manage(learning_config) // Manage learning_config
+        .manage(app_config)
+        .manage(learning_config)
         .mount("/", routes![
             user_content,
             audio_files,

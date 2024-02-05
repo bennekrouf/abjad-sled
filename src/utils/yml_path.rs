@@ -1,12 +1,12 @@
-use std::path::PathBuf;
 use serde_yaml;
-use std::env;
-use crate::models::AppConfig;
-use lazy_static::lazy_static;
+use std::path::PathBuf;
 use std::sync::Mutex;
-use crate::learning::models::learning_config::LearningConfig;
-// use serde::Deserialize;
+use std::env;
+use lazy_static::lazy_static;
 use serde::de::DeserializeOwned;
+
+use crate::models::AppConfig;
+use crate::learning::models::learning_config::LearningConfig;
 
 pub trait Config {
     fn load(config_path: &str) -> Self;
