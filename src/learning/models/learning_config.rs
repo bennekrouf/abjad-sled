@@ -9,4 +9,5 @@ pub struct LearningConfig {
     pub streak_bonus: i32,
     pub min_score: i32,
     pub max_score: i32,
+    pub decimals: Option<usize>,
 }

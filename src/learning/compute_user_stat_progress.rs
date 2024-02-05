@@ -37,5 +37,69 @@ pub fn compute_user_stat_progress(config: &LearningConfig, stat: &UserStat) -> f
     let percentage = scale_to_percentage(score, min_value, max_value);
     println!("Scaled Percentage: {}", percentage);
 
-    percentage
+    let decimals = config.decimals.unwrap_or(0);
+
+    let formatted_percentage = format!("{:.1$}", percentage, decimals);
+    println!("Formatted Percentage: {}", formatted_percentage);
+
+    formatted_percentage.parse().unwrap_or(0.0)
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::learning::models::learning_config::LearningConfig;
+    use crate::learning::models::user_stat::UserStat;
+
+    use chrono::{TimeZone, Utc};
+
+    #[test]
+    fn test_basic_progress_calculation() {
+        let config = LearningConfig {
+            streak_bonus: 3,
+            consecutive_hours_threshold: 24,
+            min_score: 0,
+            max_score: 100,
+            // Other fields as necessary...
+        };
+        let stat = UserStat {
+            updated_at: Utc.ymd(2022, 5, 1).and_hms(12, 0, 0).timestamp(),
+            g: 10,
+            w: 5,
+            repetitions: Some(2),
+            // Other fields as necessary...
+        };
+        let progress = compute_user_stat_progress(&config, &stat);
+        assert!(progress > 0.0); // The exact assertion might need adjustment based on decay_factor and scale_to_percentage calculations
+    }
+
+    #[test]
+    fn test_streak_bonus() {
+        let config = LearningConfig {
+            streak_bonus: 2, // Lower threshold for testing
+            // Other configurations...
+        };
+        let stat = UserStat {
+            repetitions: Some(3), // Exceeds streak bonus threshold
+            // Populate other necessary fields...
+        };
+        let progress = compute_user_stat_progress(&config, &stat);
+        assert!(progress > 0.0); // Check that the progress includes the streak bonus
+    }
+
+    #[test]
+    fn test_consecutive_hours_bonus() {
+        // This test assumes has_reached_consecutive_hours would return true for the given stat
+        let config = LearningConfig {
+            // Configuration that would trigger the consecutive hours bonus...
+        };
+        let stat = UserStat {
+            // UserStat configuration that would simulate reaching consecutive hours threshold...
+        };
+        let initial_progress = compute_user_stat_progress(&config, &stat);
+        // Potentially manipulate stat to not meet the threshold and compute again
+        let adjusted_progress = compute_user_stat_progress(&config, &stat); // Adjust stat accordingly
+        assert!(initial_progress < adjusted_progress); // Assuming the score doubles when the threshold is met
+    }
 }

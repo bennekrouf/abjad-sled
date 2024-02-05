@@ -48,7 +48,8 @@ pub fn user_level_analytics(config: &LearningConfig, db: &Database, user_stats: 
     for entry in &mut level_counts {
         if let Some((total_progress, count)) = level_progress.get(&entry.level) {
             if *count > 0 {
-                entry.progress = total_progress / *count as f32;
+                let formatted_progress = format!("{:.1$}", total_progress / *count as f32, config.decimals.unwrap_or(0));
+                entry.progress = formatted_progress.parse().unwrap_or(0.0);
             }
         }
     }
