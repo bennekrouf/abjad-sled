@@ -4,4 +4,5 @@ use serde::{Deserialize, Serialize};
 pub struct Analytic {
     pub id: String,
     pub progress: f32,
+    pub category: Option<String>,
 }

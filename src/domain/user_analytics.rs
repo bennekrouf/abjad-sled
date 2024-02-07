@@ -21,6 +21,7 @@ pub fn user_analytics(
         (id.clone(), Analytic {
             id: id.clone(),
             progress: 0.0,
+            category: None
         })
     }).collect();
 
