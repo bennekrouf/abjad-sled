@@ -6,6 +6,7 @@ pub struct Knowledge {
     pub name: Option<String>,
     pub audio: Option<String>,
     pub level: Option<u8>,
+    pub sub_knowledge: Option<Vec<Knowledge>>
 }
 
 pub trait Levelable {

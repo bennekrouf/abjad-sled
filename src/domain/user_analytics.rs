@@ -18,7 +18,7 @@ pub fn user_analytics(
 
     // Initialize analytics for all knowledge entries with default progress
     let mut analytics_map: HashMap<String, Analytic> = knowledge_entries.iter().map(|(id, _)| {
-        (id.clone(), Analytic { id: id.clone(), progress: 0.0 })
+        (id.clone(), Analytic { id: id.clone(), progress: 0.0, category: None })
     }).collect();
 
     // Update progress for analytics based on user stats

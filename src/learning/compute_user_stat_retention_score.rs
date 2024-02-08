@@ -1,4 +1,4 @@
-use crate::learning::models::{
+use super::models::{
     user_stat::UserStat,
     learning_config::LearningConfig
 };

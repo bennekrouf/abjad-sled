@@ -1,3 +1,8 @@
-decay_rate_factor_correct: 0.0 # 0.0 no decay
-decay_rate_factor_incorrect: 0.0
-consecutive_hours_threshold: 0
+decay_rate_factor_correct: 0.5 # 0.0 no decay 0.1 - 0.9 (positive effect fades faster, requiring more frequent review)
+decay_rate_factor_incorrect: 0.3 # 0.1 to 0.5 - up to 0.5 increases the penalty for incorrect answers
+consecutive_hours_threshold: 3 # 2 to 6 hours
+progress_threshold: 40 # higher means easier to recall 20 to 60
+streak_bonus: 5
+min_score: 2
+max_score: 120
+decimals: 0
