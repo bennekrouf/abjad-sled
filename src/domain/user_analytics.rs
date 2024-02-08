@@ -1,9 +1,9 @@
 use std::collections::HashMap;
 use crate::domain::knowledge_entries::knowledge_entries;
-use crate::learning::models::analytic::Analytic;
 use crate::learning::models::{
     user_stat::UserStat,
-    learning_config::LearningConfig
+    learning_config::LearningConfig,
+    analytic::Analytic
 };
 use crate::learning::compute_user_stat_progress::compute_user_stat_progress;
 use sled::Db;
@@ -18,10 +18,7 @@ pub fn user_analytics(
 
     // Initialize analytics for all knowledge entries with default progress
     let mut analytics_map: HashMap<String, Analytic> = knowledge_entries.iter().map(|(id, _)| {
-        (id.clone(), Analytic {
-            id: id.clone(),
-            progress: 0.0,
-        })
+        (id.clone(), Analytic { id: id.clone(), progress: 0.0 })
     }).collect();
 
     // Update progress for analytics based on user stats
